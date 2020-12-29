@@ -27,6 +27,70 @@ class Buku extends CI_Controller {
 	}
 
 	public function submit(){
+
+		$date 			= 	new DateTime('Asia/Jakarta');
+		$time = time();
+		if(isset($_FILES['img']) && !empty($_FILES['img']['name']))
+		{	
+			$file 						= $_FILES['img']['name'];
+			$explode 					= explode(".", $file);
+			$extid 						= end($explode);
+			$nm = "IMG_".$time.".".$extid;
+			$config['upload_path'] 		= FCPATH.'assets/images';
+			$config['overwrite'] 		= TRUE;
+			$config['allowed_types'] 	= 'jpg|png|JPG|PNG|jpeg';
+			$config['remove_spaces'] 	= FALSE;
+			$config['file_name'] 		= $nm;
+			$this->load->library('upload',$config);
+			$this->upload->initialize($config);
+
+			if($this->upload->do_upload('img'))
+			{
+
+			$data = array(
+					'ID_BUKU' => $this->Buku_model->generateID(),
+					'ID_ADMIN' => $this->session->userdata('user_id'),
+					'TITLE' => $this->input->post('judul'),
+					'AUTHOR' => $this->input->post('penulis'),
+					'PUBLISHER' => $this->input->post('penerbit'),
+					'YEAR' => $this->input->post('tahun'),
+					'QTY' => $this->input->post('jumlah'),
+					'KELUAR' => $this->input->post('judul'),
+					'gambar' => $nm,
+				);
+				$upload_data = $this->upload->data();
+				// print_r($data);
+				$this->Buku_model->insert_buku($data);
+
+			}else{
+				// echo "<br>gagal";
+
+				 // print_r($this->upload->display_errors());;
+						 ?>
+			 <script type="text/javascript">
+			 	alert("<?php print_r($this->upload->display_errors()); ?>");
+			 	window.location.href="<?php echo base_url(); ?>buku/add"
+			 </script>
+			 <?php
+				return false;
+			}
+		}else{
+			$data = array(
+					'ID_BUKU' => $this->Buku_model->generateID(),
+					'ID_ADMIN' => $this->session->userdata('user_id'),
+					'TITLE' => $this->input->post('judul'),
+					'AUTHOR' => $this->input->post('penulis'),
+					'PUBLISHER' => $this->input->post('penerbit'),
+					'YEAR' => $this->input->post('tahun'),
+					'QTY' => $this->input->post('jumlah'),
+					'KELUAR' => $this->input->post('judul'),
+				);
+				$this->Buku_model->insert_buku($data);
+		}
+		redirect(base_url().'buku');
+	}
+
+	public function submit_backup(){
 		if($this->input->post('submit')){
 			$this->form_validation->set_rules('judul', 'Judul Buku', 'trim|required');
 			$this->form_validation->set_rules('penulis', 'Penulis', 'trim|required');

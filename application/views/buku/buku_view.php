@@ -33,6 +33,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Gambar</th>
                                 <th>Kode</th>
                                 <th>Judul Buku</th>
                                 <th>Penulis</th>
@@ -50,6 +51,12 @@
                         <?php foreach ($list as $bookList):?>
                             <tr>
                                 <td><?php echo $no ?></td>
+                                <td>
+                                    <?php if ($bookList->gambar): ?>
+                                        
+                                    <img src="<?php echo base_url(); ?>assets/images/<?php echo $bookList->gambar; ?>" style="width: 100px;"> 
+                                    <?php endif ?>
+                                </td>
                                 <td><?php echo $bookList->ID_BUKU ?></td>
                                 <td><?php echo $bookList->TITLE ?></td>
                                 <td><?php echo $bookList->AUTHOR ?></td>
@@ -62,9 +69,11 @@
                                     <a href="<?php echo base_url() ?>buku/edit?idtf=<?php echo $bookList->ID_BUKU ?>" class="btn btn-info btn-xs">
                                         <i class="fa fa-edit"> Edit</i>
                                     </a>
+                                        <a href="<?php echo base_url() ?>buku/delete?rcgn=<?php echo $bookList->ID_BUKU ?>"> hapus </a>
+                                    <!-- 
                                     <button class="btn btn-danger btn-xs" onclick="sweets()">
                                         <i class="fa fa-trash"> Delete</i>
-                                    </button>
+                                    </button> -->
                                 </td>
                                 <?php endif; ?>
                             </tr>

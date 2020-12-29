@@ -77,6 +77,9 @@ class Buku_model extends CI_Model {
 			return false;
 		}
 	}
+	function insert_buku($data){
+		$this->db->insert('buku',$data);
+	}
 
 
 }

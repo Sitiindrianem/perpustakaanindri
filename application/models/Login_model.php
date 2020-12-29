@@ -20,6 +20,7 @@ class Login_model extends CI_Model {
 		$kueri = $this->db->where('USERNAME', $username)->where('PASSWORD', md5($password))->get('admin');
 		if($kueri->num_rows() > 0){
 			$data = array(
+				'user_id'	=> $kueri->row()->ID_ADMIN,
 				'username'	=> $kueri->row()->USERNAME,
 				'logged_in'	=> true,
 				'role'		=> $kueri->row()->ROLE
